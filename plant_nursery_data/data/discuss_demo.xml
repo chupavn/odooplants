@@ -21,7 +21,4 @@
 	<record id="sms.message_demo_partner_1_3_notif_0" model="mail.notification">
 		<field name="notification_status">sent</field>
 	</record>
-	<record id="sms.message_demo_partner_1_3_notif_1" model="mail.notification">
-		<field name="notification_status">sent</field>
-	</record>
 </data></odoo>
