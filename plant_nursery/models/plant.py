@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
+import ast
+
 from odoo import api, fields, models, _
 from odoo.addons.http_routing.models.ir_http import slug
 from odoo.exceptions import UserError
@@ -41,20 +43,13 @@ class Category(models.Model):
         for category in self:
             category.order_count = rg_data.get(category.id, 0)
 
-    def get_alias_model_name(self, vals):
-        return 'nursery.order'
-
-    def get_alias_values(self):
-        values = super(Category, self).get_alias_values()
-        values['alias_defaults'] = {'category_id': self.id}
+    def _alias_get_creation_values(self):
+        values = super(Category, self)._alias_get_creation_values()
+        values['alias_model_id'] = self.env['ir.model']._get('nursery.order').id
+        if self.id:
+            values['alias_defaults'] = defaults = ast.literal_eval(self.alias_defaults or "{}")
+            defaults['category_id'] = self.id
         return values
-
-    def write(self, values):
-        res = super(Category, self).write(values)
-        if values.get('alias_id'):
-            for record in self:
-                record.alias_id.sudo().write(record.get_alias_values())
-        return res
 
     def action_view_plants(self):
         action = self.env.ref('plant_nursery.nursery_plant_action_category').read()[0]
