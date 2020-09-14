@@ -47,8 +47,7 @@ class CustomerPortal(CustomerPortal):
             sortby = 'date'
         order = searchbar_sortings[sortby]['order']
 
-        # archive groups - Default Group By 'create_date'
-        archive_groups = self._get_archive_groups('nursery.order', domain)
+        # Default Group By 'create_date'
         if date_begin and date_end:
             domain += [('create_date', '>', date_begin), ('create_date', '<=', date_end)]
 
@@ -86,7 +85,6 @@ class CustomerPortal(CustomerPortal):
             'page_name': 'order',
             'default_url': '/my/order',
             'pager': pager,
-            'archive_groups': archive_groups,
             'searchbar_sortings': searchbar_sortings,
             'searchbar_inputs': searchbar_inputs,
             'sortby': sortby,
